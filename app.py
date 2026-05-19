@@ -1,3 +1,7 @@
+# AWS Configuration
+   AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
+   AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+
 from flask import Flask
    
    app = Flask(__name__)
