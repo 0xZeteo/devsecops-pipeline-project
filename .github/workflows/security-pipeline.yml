@@ -66,20 +66,18 @@ jobs:
     if: always()
     steps:
       - name: Send Slack notification
-        uses: slackapi/slack-github-action@v1.27.0
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          payload: |
-            {
-              "text": "DevSecOps Pipeline Completed",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*DevSecOps Security Pipeline Results*\n\n✅ Gitleaks: ${{ needs.secrets-scan.result }}\n✅ Semgrep: ${{ needs.sast-scan.result }}\n✅ Checkov: ${{ needs.iac-scan.result }}\n✅ Trivy: ${{ needs.container-scan.result }}\n\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Full Results>"
-                  }
+        run: |
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "text": "DevSecOps Security Pipeline Results",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*DevSecOps Security Pipeline Completed*\n\n✅ Gitleaks: ${{ needs.secrets-scan.result }}\n✅ Semgrep: ${{ needs.sast-scan.result }}\n✅ Checkov: ${{ needs.iac-scan.result }}\n✅ Trivy: ${{ needs.container-scan.result }}\n\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Full Results>"
                 }
-              ]
-            }
+              }
+            ]
+          }'
