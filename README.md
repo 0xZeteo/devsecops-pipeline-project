@@ -1,5 +1,9 @@
 # DevSecOps CI/CD Security Pipeline
-
+   
+   ![Security Pipeline](https://github.com/0xZeteo/devsecops-pipeline-project/actions/workflows/security-pipeline.yml/badge.svg)
+   ![GitHub](https://img.shields.io/github/license/0xZeteo/devsecops-pipeline-project)
+   ![GitHub last commit](https://img.shields.io/github/last-commit/0xZeteo/devsecops-pipeline-project)
+   
 A fully automated security pipeline that scans code for vulnerabilities, secrets, infrastructure misconfigurations, and container vulnerabilities before deployment.
 
 ## Overview
