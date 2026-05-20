@@ -103,7 +103,7 @@ During development, this pipeline caught:
 1. Fork this repository
 2. Clone to your local machine:
 ```bash
-   git clone https://github.com/YOUR-USERNAME/devsecops-pipeline-project.git
+   git clone https://github.com/0xZeteo/devsecops-pipeline-project.git
    cd devsecops-pipeline-project
 ```
 3. Make changes and push - the pipeline runs automatically!
