@@ -26,9 +26,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Run Semgrep
+        id: semgrep
         uses: semgrep/semgrep-action@v1
         with:
           config: auto
+        continue-on-error: true
+      - name: Create issue for SAST findings
+        if: steps.semgrep.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🔴 SAST Security Findings Detected',
+              body: `## Semgrep Security Scan Results
+              
+              **Status:** ❌ Failed
+              **Commit:** ${context.sha}
+              **Triggered by:** ${context.actor}
+              
+              Semgrep detected security vulnerabilities in the code.
+              
+              ### Action Required
+              1. Review the [full scan results](${context.payload.repository.html_url}/actions/runs/${context.runId})
+              2. Fix the identified vulnerabilities
+              3. Re-run the pipeline
+              
+              **Run Details:** [View Workflow](${context.payload.repository.html_url}/actions/runs/${context.runId})`,
+              labels: ['security', 'sast', 'automated']
+            })
 
   iac-scan:
     needs: sast-scan
@@ -37,11 +64,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Run Checkov
+        id: checkov
         uses: bridgecrewio/checkov-action@master
         with:
           directory: ./
           framework: terraform
           soft_fail: true
+      - name: Create issue for IaC findings
+        if: steps.checkov.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🔴 Infrastructure Security Issues Detected',
+              body: `## Checkov IaC Scan Results
+              
+              **Status:** ❌ Failed
+              **Commit:** ${context.sha}
+              **Triggered by:** ${context.actor}
+              
+              Checkov detected security misconfigurations in infrastructure code.
+              
+              ### Action Required
+              1. Review the [full scan results](${context.payload.repository.html_url}/actions/runs/${context.runId})
+              2. Fix the infrastructure misconfigurations
+              3. Re-run the pipeline
+              
+              **Run Details:** [View Workflow](${context.payload.repository.html_url}/actions/runs/${context.runId})`,
+              labels: ['security', 'iac', 'automated']
+            })
 
   container-scan:
     needs: iac-scan
