@@ -3,7 +3,7 @@
    ![Security Pipeline](https://github.com/0xZeteo/devsecops-pipeline-project/actions/workflows/security-pipeline.yml/badge.svg)
    ![GitHub](https://img.shields.io/github/license/0xZeteo/devsecops-pipeline-project)
    ![GitHub last commit](https://img.shields.io/github/last-commit/0xZeteo/devsecops-pipeline-project)
-   
+
 A fully automated security pipeline that scans code for vulnerabilities, secrets, infrastructure misconfigurations, and container vulnerabilities before deployment.
 
 ## Overview
@@ -58,7 +58,22 @@ The pipeline is defined in `.github/workflows/security-pipeline.yml` and runs au
 - ✅ **Multi-Layer Defense**: 4 different security scanners
 - ✅ **Shift Left Approach**: Catches issues before deployment
 - ✅ **Zero Manual Intervention**: Fully automated workflow
+- ✅ **Slack Integration**: Real-time notifications to security team
+- ✅ **Auto-Issue Creation**: Automatically creates GitHub issues for security findings
 - ✅ **Production Ready**: Uses industry-standard tools
+
+## Live Demo
+
+Want to see the pipeline in action catching vulnerabilities?
+
+Check out the **[vulnerable-demo branch](https://github.com/0xZeteo/devsecops-pipeline-project/tree/vulnerable-demo)** which contains intentional security flaws:
+- Hardcoded API credentials
+- Command injection vulnerability  
+- Insecure Flask configuration
+
+The pipeline automatically:
+1. ❌ Blocks the vulnerable code
+2. 🔔 Sends Slack notif
 
 ## Real Security Findings
 
@@ -107,14 +122,20 @@ During development, this pipeline caught:
 - Real-world AWS security misconfigurations and how to prevent them
 - Container security best practices
 
-## Future Enhancements
+## Implemented Enhancements
+
+- ✅ Slack notifications for pipeline results
+- ✅ Automated GitHub issue creation for findings
+- ✅ Status badges showing build health
+- ✅ Demo branch with intentional vulnerabilities
+
+## Potential Future Additions
 
 - [ ] Add DAST (Dynamic Application Security Testing)
-- [ ] Integrate with Slack for security notifications
-- [ ] Add automated GitHub issue creation for findings
 - [ ] Implement security scoring dashboard
-- [ ] Add SCA (Software Composition Analysis)
-
+- [ ] Add dependency scanning with Dependabot
+- [ ] Create custom security policies per environment
+- [ ] Add automated remediation suggestions
 ## Author
 
 **ZeteoSec** 
