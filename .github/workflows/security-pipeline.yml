@@ -59,3 +59,27 @@ jobs:
           exit-code: '0'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
+
+  notify-slack:
+    runs-on: ubuntu-latest
+    needs: [secrets-scan, sast-scan, iac-scan, container-scan]
+    if: always()
+    steps:
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "DevSecOps Pipeline Completed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*DevSecOps Security Pipeline Results*\n\n✅ Gitleaks: ${{ needs.secrets-scan.result }}\n✅ Semgrep: ${{ needs.sast-scan.result }}\n✅ Checkov: ${{ needs.iac-scan.result }}\n✅ Trivy: ${{ needs.container-scan.result }}\n\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Full Results>"
+                  }
+                }
+              ]
+            }
