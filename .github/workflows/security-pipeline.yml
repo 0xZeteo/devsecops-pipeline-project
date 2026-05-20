@@ -67,7 +67,7 @@ jobs:
     steps:
       - name: Send Slack notification
         run: |
-          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+          curl -X POST ${{ secrets.SLACK_WEB_HOOK }} \
           -H 'Content-Type: application/json' \
           -d '{
             "text": "DevSecOps Security Pipeline Results",
